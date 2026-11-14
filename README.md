@@ -4,7 +4,7 @@
   <img src="logo.svg" alt="SSOUyuni" width="120"/>
 </p>
 
-**SSOUyuni** is a production-ready OIDC authentication proxy for [Uyuni](https://www.uyuni-project.org/) (SUSE patch management).  
+**SSOUyuni** is a  OIDC authentication proxy for [Uyuni](https://www.uyuni-project.org/) (SUSE patch management).  
 It enables users to log in to Uyuni using their **Microsoft Entra ID (Azure AD)** credentials, with automatic account provisioning and role synchronization.
 
 ---
@@ -23,7 +23,7 @@ Browser → nginx (TLS 443)
 1. User visits `https://uyuni-proxy.internal` → redirected to Microsoft login
 2. After authentication, Uyuni account is created or updated via XML-RPC
 3. Flask opens a Uyuni session using an ephemeral password, stores cookies server-side
-4. All subsequent requests are proxied transparently — the browser never sees internal Uyuni URLs or cookies
+4. All subsequent requests are proxied transparently, the browser never sees internal Uyuni URLs or cookies
 
 ## Features
 
@@ -80,8 +80,8 @@ pytest tests/ -v
 
 ## Version
 
-Current: **1.0.0** — see [CHANGELOG.md](CHANGELOG.md)
+Current: **1.0.0** see [CHANGELOG.md](CHANGELOG.md)
 
 ## License
 
-Internal tool — not for public distribution.
+Internal tool not for public distribution.
