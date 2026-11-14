@@ -1,0 +1,45 @@
+[Unit]
+Description=SSOUyuni — Uyuni Entra ID SSO proxy
+After=network.target
+Wants=network.target
+
+[Service]
+Type=simple
+User=ssouuni
+WorkingDirectory=/opt/ssouuni
+EnvironmentFile=/opt/ssouuni/.env
+Environment=HOME=/opt/ssouuni
+
+# gthread: 1 process + 16 threads — required to share _SESSIONS in-memory.
+# With --workers > 1 each process has its own _SESSIONS dict and sessions
+# are lost on ~50% of requests (gunicorn round-robin load balancing).
+ExecStart=/opt/ssouuni/venv/bin/gunicorn \
+    --bind 127.0.0.1:5002 \
+    --workers 1 \
+    --worker-class gthread \
+    --threads 16 \
+    --timeout 300 \
+    --access-logfile - \
+    --error-logfile - \
+    app:app
+
+Restart=on-failure
+RestartSec=5
+TimeoutStopSec=150
+
+# systemd hardening
+NoNewPrivileges=true
+PrivateTmp=true
+ProtectSystem=strict
+ProtectHome=true
+ReadWritePaths=/opt/ssouuni
+LimitNOFILE=65536
+ProtectKernelTunables=true
+ProtectKernelModules=true
+ProtectControlGroups=true
+RestrictRealtime=true
+RestrictSUIDSGID=true
+SystemCallArchitectures=native
+
+[Install]
+WantedBy=multi-user.target
